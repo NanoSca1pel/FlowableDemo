@@ -1,4 +1,3 @@
-import com.sun.corba.se.spi.ior.ObjectKey;
 import org.flowable.engine.*;
 import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration;
@@ -12,11 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @Description: TODO
+ * @Description: 流程1
  * @author: lhtao
  * @date: 2022年10月18日 9:31
  */
-public class Test01 {
+public class ActivitiTest1 {
 
     private ProcessEngine getProcessEngine() {
         //获取ProcessEngineConfiguration对象
@@ -51,6 +50,10 @@ public class Test01 {
 
     /**
      * 流程部署
+     * 部署流程涉及到三张表：
+     * 流程部署表：ACT_RE_DEPLOYMENT 一次流程部署操作就会生成一条表记录
+     * 流程定义表：ACT_RE_PROCDEF 一次部署操作中包含几个流程定义文件就会产生几条记录
+     * 流程定义资源文件表：ACT_GE_BYTEARRAY 有多少资源就会生成几条记录
      */
     @Test
     public void testDeploy() {
@@ -175,4 +178,36 @@ public class Test01 {
             System.out.println("endTime: " + h.getEndTime());
         });
     }
+
+    /**
+     * 加载默认名称的配置文件（flowable.cfg.xml）
+     * @return
+     */
+    private ProcessEngine getProcessEngineByDefaultNameXml() {
+        //获取ProcessEngineConfiguration对象
+        return ProcessEngines.getDefaultProcessEngine();
+    }
+
+    /**
+     * 加载自定义名称的配置文件
+     * @return
+     */
+    private ProcessEngine getProcessEngineByXml() {
+        ProcessEngine processEngine = ProcessEngineConfiguration.createProcessEngineConfigurationFromResource("flowable.cfg.xml").buildProcessEngine();
+        return processEngine;
+    }
+
+    @Test
+    public void processEngineByDefaultNameXml() {
+        ProcessEngine processEngineByXml = getProcessEngineByDefaultNameXml();
+        System.out.println(processEngineByXml);
+    }
+
+    @Test
+    public void processEngineByXml() {
+        ProcessEngine processEngineByXml = getProcessEngineByXml();
+        System.out.println(processEngineByXml);
+    }
+
+
 }
